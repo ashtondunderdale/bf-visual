@@ -35,7 +35,7 @@
             // 
             outputBox.Location = new Point(12, 128);
             outputBox.Name = "outputBox";
-            outputBox.Size = new Size(776, 45);
+            outputBox.Size = new Size(776, 200);
             outputBox.TabIndex = 1;
             outputBox.Text = "";
             // 
