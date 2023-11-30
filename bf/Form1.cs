@@ -1,54 +1,107 @@
 using System.Drawing.Printing;
 
-namespace bf
+namespace bf;
+
+public partial class Brainfuck : Form
 {
-    public partial class Brainfuck : Form
+    public Brainfuck()
     {
-        public Brainfuck()
+        InitializeComponent();
+    }
+
+    private void Brainfuck_Load(object sender, EventArgs e)
+    {
+        inputBox.TextChanged += InputBox_TextChanged;
+    }
+
+    private void InputBox_TextChanged(object sender, EventArgs e)
+    {
+        int dataPointer = 0;
+        byte[] tape = new byte[10]; //32768
+
+        outputBox.Text = "";
+        pointerLocationBox.Text = dataPointer.ToString();
+
+        foreach (var command in inputBox.Text)
         {
-            InitializeComponent();
-        }
+            errorBox.Text = "";
 
-        private void Brainfuck_Load(object sender, EventArgs e)
-        {
-            inputBox.TextChanged += InputBox_TextChanged;
-        }
-
-        private void InputBox_TextChanged(object sender, EventArgs e)
-        {
-            int dataPointer = 0;
-            byte[] tape = new byte[10]; //32768
-
-            outputBox.Text = "";
-
-            foreach (var command in inputBox.Text)
+            switch (command)
             {
-                switch (command)
-                {
-                    case '>':
+                case '>':
+                    if (dataPointer + 1 < tape.Length && dataPointer + 1 >= 0)
+                    {
                         dataPointer++;
-                        break;
+                    }
+                    else
+                    {
+                        if (dataPointer <= 0)
+                        {
+                            dataPointer++;
+                            errorBox.Text = $"Data tape has been exceeded by {dataPointer}";
+                        }
+                        else 
+                        {
+                            dataPointer++;
+                            errorBox.Text = $"Data tape has been exceeded by {dataPointer - tape.Length + 1}";
+                        }
+                    }
+                    break;
 
-                    case '<':
+                case '<':
+                    if (dataPointer - 1 >= 0 && dataPointer - 1 < tape.Length)
+                    {
                         dataPointer--;
-                        break;
+                    }
+                    else
+                    {
+                        if (dataPointer >= 0) 
+                        {
+                            dataPointer--;
+                            errorBox.Text = $"Data tape has been exceeded by {dataPointer - tape.Length + 1}";
+                        }
+                        else 
+                        {
+                            dataPointer--;
+                            errorBox.Text = $"Data tape has been exceeded by {dataPointer}";
+                        }
+                    }
+                    break;
 
-                    case '+':
-                        if (dataPointer < tape.Length) tape[dataPointer]++;
+                case '+':
+                    if (dataPointer < tape.Length && dataPointer >= 0)
+                    {
+                        tape[dataPointer]++;
+                    }
+                    else
+                    {
+                        errorBox.Text = "Cannot increment value outside of byte array length";
+                    }
 
-                        break;
+                    break;
 
-                    case '-':
-                        if (dataPointer < tape.Length) tape[dataPointer]--;
-                        break;
-                }
+                case '-':
+                    if (dataPointer < tape.Length && dataPointer >= 0)
+                    {
+                        tape[dataPointer]--;
+                    }
+                    else
+                    {
+                        errorBox.Text = "Cannot decrement value outside of byte array length";
+                    }
+                    break;
+
+                default:
+                    errorBox.Text = "Not a valid bf command character";
+                    break;
             }
+            pointerLocationBox.Text = dataPointer.ToString();
+        }
 
-            for (int i = 0; i < tape.Length; i++) 
-            {
-                outputBox.Text += tape[i];
-                outputBox.Text += " | ";
-            }
+        for (int i = 0; i < tape.Length; i++)
+        {
+            outputBox.Text += tape[i];
+            outputBox.Text += " | ";
         }
     }
 }
