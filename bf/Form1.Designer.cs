@@ -25,6 +25,7 @@
             runButton = new Button();
             programInputBox = new RichTextBox();
             label2 = new Label();
+            darkModeCheckBox = new CheckBox();
             SuspendLayout();
             // 
             // inputBox
@@ -42,6 +43,7 @@
             arrayBox.Size = new Size(930, 200);
             arrayBox.TabIndex = 1;
             arrayBox.Text = "";
+            arrayBox.ReadOnly = true;
             // 
             // errorBox
             // 
@@ -50,6 +52,7 @@
             errorBox.Size = new Size(306, 99);
             errorBox.TabIndex = 2;
             errorBox.Text = "";
+            errorBox.ReadOnly = true;
             // 
             // pointerLocationBox
             // 
@@ -74,6 +77,7 @@
             outputBox.Size = new Size(210, 86);
             outputBox.TabIndex = 5;
             outputBox.Text = "";
+            outputBox.ReadOnly = true;
             // 
             // runButton
             // 
@@ -101,11 +105,23 @@
             label2.TabIndex = 8;
             label2.Text = "Input";
             // 
+            // darkModeCheckBox
+            // 
+            darkModeCheckBox.AutoSize = true;
+            darkModeCheckBox.Location = new Point(988, 14);
+            darkModeCheckBox.Name = "darkModeCheckBox";
+            darkModeCheckBox.Size = new Size(105, 24);
+            darkModeCheckBox.TabIndex = 9;
+            darkModeCheckBox.Text = "Dark Mode";
+            darkModeCheckBox.UseVisualStyleBackColor = true;
+            darkModeCheckBox.CheckedChanged += darkModeCheckBox_CheckedChanged;
+            // 
             // Brainfuck
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1417, 556);
+            Controls.Add(darkModeCheckBox);
             Controls.Add(label2);
             Controls.Add(programInputBox);
             Controls.Add(runButton);
@@ -131,7 +147,8 @@
         public Label label1;
         public RichTextBox outputBox;
         public Button runButton;
-        public static RichTextBox programInputBox;
         public Label label2;
+        private CheckBox darkModeCheckBox;
+        public static RichTextBox programInputBox;
     }
 }
