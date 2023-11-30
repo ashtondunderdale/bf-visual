@@ -17,61 +17,82 @@
         private void InitializeComponent()
         {
             inputBox = new RichTextBox();
-            outputBox = new RichTextBox();
+            arrayBox = new RichTextBox();
             errorBox = new RichTextBox();
-            label1 = new Label();
             pointerLocationBox = new TextBox();
+            label1 = new Label();
+            outputBox = new RichTextBox();
+            runButton = new Button();
             SuspendLayout();
             // 
             // inputBox
             // 
             inputBox.Location = new Point(12, 12);
             inputBox.Name = "inputBox";
-            inputBox.Size = new Size(318, 110);
+            inputBox.Size = new Size(352, 523);
             inputBox.TabIndex = 0;
             inputBox.Text = "";
             // 
-            // outputBox
+            // arrayBox
             // 
-            outputBox.Location = new Point(12, 128);
-            outputBox.Name = "outputBox";
-            outputBox.Size = new Size(776, 200);
-            outputBox.TabIndex = 1;
-            outputBox.Text = "";
+            arrayBox.Location = new Point(475, 335);
+            arrayBox.Name = "arrayBox";
+            arrayBox.Size = new Size(930, 200);
+            arrayBox.TabIndex = 1;
+            arrayBox.Text = "";
             // 
             // errorBox
             // 
-            errorBox.Location = new Point(336, 12);
+            errorBox.Location = new Point(1099, 12);
             errorBox.Name = "errorBox";
-            errorBox.Size = new Size(452, 110);
+            errorBox.Size = new Size(306, 99);
             errorBox.TabIndex = 2;
             errorBox.Text = "";
+            // 
+            // pointerLocationBox
+            // 
+            pointerLocationBox.Location = new Point(475, 299);
+            pointerLocationBox.Name = "pointerLocationBox";
+            pointerLocationBox.Size = new Size(37, 27);
+            pointerLocationBox.TabIndex = 4;
             // 
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(12, 354);
+            label1.Location = new Point(518, 302);
             label1.Name = "label1";
-            label1.Size = new Size(116, 20);
+            label1.Size = new Size(55, 20);
             label1.TabIndex = 3;
-            label1.Text = "Pointer Location";
+            label1.Text = "Pointer";
             // 
-            // pointerLocationBox
+            // outputBox
             // 
-            pointerLocationBox.Location = new Point(134, 351);
-            pointerLocationBox.Name = "pointerLocationBox";
-            pointerLocationBox.Size = new Size(25, 27);
-            pointerLocationBox.TabIndex = 4;
+            outputBox.Location = new Point(379, 12);
+            outputBox.Name = "outputBox";
+            outputBox.Size = new Size(210, 86);
+            outputBox.TabIndex = 5;
+            outputBox.Text = "";
+            // 
+            // runButton
+            // 
+            runButton.Location = new Point(467, 104);
+            runButton.Name = "runButton";
+            runButton.Size = new Size(122, 29);
+            runButton.TabIndex = 6;
+            runButton.Text = "Run Brainfuck";
+            runButton.UseVisualStyleBackColor = true;
             // 
             // Brainfuck
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
+            ClientSize = new Size(1417, 556);
+            Controls.Add(runButton);
+            Controls.Add(outputBox);
             Controls.Add(pointerLocationBox);
             Controls.Add(label1);
             Controls.Add(errorBox);
-            Controls.Add(outputBox);
+            Controls.Add(arrayBox);
             Controls.Add(inputBox);
             Name = "Brainfuck";
             Text = "Brainfuck";
@@ -83,9 +104,11 @@
         #endregion
 
         private RichTextBox inputBox;
-        private RichTextBox outputBox;
+        private RichTextBox arrayBox;
         private RichTextBox errorBox;
-        private Label label1;
         private TextBox pointerLocationBox;
+        private Label label1;
+        private RichTextBox outputBox;
+        private Button runButton;
     }
 }
