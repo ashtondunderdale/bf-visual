@@ -1,3 +1,6 @@
+using System;
+using System.Windows.Forms;
+
 namespace bf
 {
     internal static class Program
@@ -6,7 +9,12 @@ namespace bf
         static void Main()
         {
             ApplicationConfiguration.Initialize();
-            Application.Run(new Brainfuck());
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+
+            Brainfuck brainfuck = new Brainfuck();
+
+            Application.Run(brainfuck);
         }
     }
 }
