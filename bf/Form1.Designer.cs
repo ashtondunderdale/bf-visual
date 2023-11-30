@@ -124,14 +124,14 @@
 
         #endregion
 
-        private RichTextBox inputBox;
-        private RichTextBox arrayBox;
-        private RichTextBox errorBox;
-        private TextBox pointerLocationBox;
-        private Label label1;
-        private RichTextBox outputBox;
-        private Button runButton;
-        private RichTextBox programInputBox;
-        private Label label2;
+        public RichTextBox inputBox;
+        public RichTextBox arrayBox;
+        public RichTextBox errorBox;
+        public TextBox pointerLocationBox;
+        public Label label1;
+        public RichTextBox outputBox;
+        public Button runButton;
+        public static RichTextBox programInputBox;
+        public Label label2;
     }
 }

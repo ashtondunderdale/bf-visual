@@ -1,200 +1,103 @@
-using System;
-using System.Drawing.Printing;
 using System.Text;
-using System.Windows.Forms;
 
-namespace bf
+namespace bf;
+
+public partial class Brainfuck : Form
 {
-    public partial class Brainfuck : Form
+    const int TAPE_SIZE = 32;
+    private byte[] tape = new byte[TAPE_SIZE];
+
+    public Brainfuck()
     {
-        const int TAPE_SIZE = 32;
+        InitializeComponent();
+        runButton.Click += RunBrainfuckButton_Click;
+    }
 
-        public Brainfuck()
+    private void Brainfuck_Load(object sender, EventArgs e)
+    {
+        UpdateArrayBox(tape);
+        inputBox.TextChanged += InputBox_TextChanged;
+    }
+
+    private void RunBrainfuckButton_Click(object sender, EventArgs e)
+    {
+        string brainfuckCode = inputBox.Text;
+        string output = Interpreter.RunBrainfuck(brainfuckCode);
+        outputBox.Text = output;
+    }
+
+    private void InputBox_TextChanged(object sender, EventArgs e)
+    {
+        int dataPointer = 0;
+        tape = new byte[TAPE_SIZE];
+
+        arrayBox.Text = "";
+        pointerLocationBox.Text = dataPointer.ToString();
+
+        foreach (var command in inputBox.Text)
         {
-            InitializeComponent();
-            runButton.Click += RunBrainfuckButton_Click;
-        }
+            errorBox.Text = "";
 
-        private void Brainfuck_Load(object sender, EventArgs e)
-        {
-            InitializeTape();
-            UpdateArrayBox(tape);
-            inputBox.TextChanged += InputBox_TextChanged;
-        }
-
-        private void RunBrainfuckButton_Click(object sender, EventArgs e)
-        {
-            string brainfuckCode = inputBox.Text;
-            string output = RunBrainfuck(brainfuckCode);
-            outputBox.Text = output;
-        }
-
-        private void InputBox_TextChanged(object sender, EventArgs e)
-        {
-            int dataPointer = 0;
-            tape = new byte[TAPE_SIZE];
-
-            arrayBox.Text = "";
-            pointerLocationBox.Text = dataPointer.ToString();
-
-            foreach (var command in inputBox.Text)
+            switch (command)
             {
-                errorBox.Text = "";
-
-                switch (command)
-                {
-                    case '>':
-                        if (dataPointer + 1 < tape.Length && dataPointer + 1 >= 0) dataPointer++;
-                        else
-                        {
-                            dataPointer++;
-                            errorBox.Text = (dataPointer <= 0) ? $"Data tape has been exceeded by {dataPointer}" : $"Data tape has been exceeded by {dataPointer - tape.Length + 1}";
-                        }
-                        break;
-
-                    case '<':
-                        if (dataPointer - 1 >= 0 && dataPointer - 1 < tape.Length) dataPointer--;
-                        else
-                        {
-                            dataPointer--;
-                            errorBox.Text = (dataPointer > 0) ? $"Data tape has been exceeded by {dataPointer - tape.Length + 1}" : $"Data tape has been exceeded by {dataPointer}";
-                        }
-                        break;
-
-                    case '+':
-                        if (dataPointer < tape.Length && dataPointer >= 0) tape[dataPointer]++;
-                        else errorBox.Text = "Cannot increment value outside of byte array length";
-                        break;
-
-                    case '-':
-                        if (dataPointer < tape.Length && dataPointer >= 0) tape[dataPointer]--;
-                        else errorBox.Text = "Cannot decrement value outside of byte array length";
-                        break;
-
-                    case '.':
-                        Console.Write(Convert.ToChar(tape[dataPointer]));
+                case '>':
+                    if (dataPointer + 1 < tape.Length && dataPointer + 1 >= 0) dataPointer++;
+                    else
+                    {
                         dataPointer++;
-                        break;
+                        errorBox.Text = (dataPointer <= 0) ? $"Data tape has been exceeded by {dataPointer}" : $"Data tape has been exceeded by {dataPointer - tape.Length + 1}";
+                    }
+                    break;
 
-                    default: errorBox.Text = "Not a valid bf command character"; break;
-                }
+                case '<':
+                    if (dataPointer - 1 >= 0 && dataPointer - 1 < tape.Length) dataPointer--;
+                    else
+                    {
+                        dataPointer--;
+                        errorBox.Text = (dataPointer > 0) ? $"Data tape has been exceeded by {dataPointer - tape.Length + 1}" : $"Data tape has been exceeded by {dataPointer}";
+                    }
+                    break;
 
-                pointerLocationBox.Text = dataPointer.ToString();
+                case '+':
+                    if (dataPointer < tape.Length && dataPointer >= 0) tape[dataPointer]++;
+                    else errorBox.Text = "Cannot increment value outside of byte array length";
+                    break;
+
+                case '-':
+                    if (dataPointer < tape.Length && dataPointer >= 0) tape[dataPointer]--;
+                    else errorBox.Text = "Cannot decrement value outside of byte array length";
+                    break;
+
+                case '.':
+                    Console.Write(Convert.ToChar(tape[dataPointer]));
+                    break;
+
+
+                default: errorBox.Text = "Not a valid bf command character"; break;
             }
 
-            UpdateArrayBox(tape);
-        }
-
-        private void UpdateArrayBox(byte[] tape)
-        {
-            for (int i = 0; i < tape.Length; i++)
-            {
-                arrayBox.Text += $" {tape[i]} |";
-
-                if ((i + 1) % 8 == 0 && (i + 1) % 32 != 0)
-                {
-                    arrayBox.Text += "      ";
-                    arrayBox.Text += " | ";
-                }
-
-                if ((i + 1) % 32 == 0)
-                {
-                    arrayBox.Text += "\n";
-                }
-            }
-        }
-
-        private void InitializeTape()
-        {
-            int dataPointer = 0;
-            tape = new byte[TAPE_SIZE];
-
-            for (int i = 0; i < tape.Length; i++)
-            {
-                tape[i] = 0;
-            }
-
-            arrayBox.Text = "";
             pointerLocationBox.Text = dataPointer.ToString();
-            UpdateArrayBox(tape);
         }
 
-        private byte[] tape;
+        UpdateArrayBox(tape);
+    }
 
-        private string RunBrainfuck(string code)
+    private void UpdateArrayBox(byte[] tape)
+    {
+        for (int i = 0; i < tape.Length; i++)
         {
-            const int TAPE_SIZE = 30000;
-            byte[] tape = new byte[TAPE_SIZE];
-            int dataPointer = 0;
-            int inputPointer = 0;
-            StringBuilder output = new();
+            arrayBox.Text += $" {tape[i]} |";
 
-            for (int i = 0; i < code.Length; i++)
+            if ((i + 1) % 8 == 0 && (i + 1) % 32 != 0)
             {
-                char command = code[i];
-
-                switch (command)
-                {
-                    case '>':
-                        if (dataPointer + 1 < tape.Length)
-                            dataPointer++;
-                        break;
-
-                    case '<':
-                        if (dataPointer - 1 >= 0)
-                            dataPointer--;
-                        break;
-
-                    case '+':
-                        tape[dataPointer]++;
-                        break;
-
-                    case '-':
-                        tape[dataPointer]--;
-                        break;
-
-                    case '.':
-                        output.Append((char)tape[dataPointer]);
-                        break;
-
-                    case ',':
-                        if (inputPointer < programInputBox.Text.Length)
-                            tape[dataPointer] = (byte)programInputBox.Text[inputPointer++];
-                        else
-                            tape[dataPointer] = 0;
-                        break;
-
-
-                    case '[':
-                        if (tape[dataPointer] == 0)
-                        {
-                            int loopDepth = 1;
-                            while (loopDepth > 0)
-                            {
-                                i++;
-                                if (code[i] == '[') loopDepth++;
-                                else if (code[i] == ']') loopDepth--;
-                            }
-                        }
-                        break;
-
-                    case ']':
-                        if (tape[dataPointer] != 0)
-                        {
-                            int loopDepth = 1;
-                            while (loopDepth > 0)
-                            {
-                                i--;
-                                if (code[i] == ']') loopDepth++;
-                                else if (code[i] == '[') loopDepth--;
-                            }
-                        }
-                        break;
-
-                    default: break;
-                }
+                arrayBox.Text += "      ";
+                arrayBox.Text += " | ";
             }
-            return output.ToString();
+
+            if ((i + 1) % 32 == 0)
+            {
+                arrayBox.Text += "\n";
+            }
         }
     }
 }
