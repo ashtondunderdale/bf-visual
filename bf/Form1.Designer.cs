@@ -23,6 +23,8 @@
             label1 = new Label();
             outputBox = new RichTextBox();
             runButton = new Button();
+            programInputBox = new RichTextBox();
+            label2 = new Label();
             SuspendLayout();
             // 
             // inputBox
@@ -75,18 +77,37 @@
             // 
             // runButton
             // 
-            runButton.Location = new Point(467, 104);
+            runButton.Location = new Point(467, 136);
             runButton.Name = "runButton";
             runButton.Size = new Size(122, 29);
             runButton.TabIndex = 6;
             runButton.Text = "Run Brainfuck";
             runButton.UseVisualStyleBackColor = true;
             // 
+            // programInputBox
+            // 
+            programInputBox.Location = new Point(379, 104);
+            programInputBox.Name = "programInputBox";
+            programInputBox.Size = new Size(161, 26);
+            programInputBox.TabIndex = 7;
+            programInputBox.Text = "";
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Location = new Point(546, 107);
+            label2.Name = "label2";
+            label2.Size = new Size(43, 20);
+            label2.TabIndex = 8;
+            label2.Text = "Input";
+            // 
             // Brainfuck
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1417, 556);
+            Controls.Add(label2);
+            Controls.Add(programInputBox);
             Controls.Add(runButton);
             Controls.Add(outputBox);
             Controls.Add(pointerLocationBox);
@@ -110,5 +131,7 @@
         private Label label1;
         private RichTextBox outputBox;
         private Button runButton;
+        private RichTextBox programInputBox;
+        private Label label2;
     }
 }
